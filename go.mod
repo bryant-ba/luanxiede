@@ -7,7 +7,6 @@ require (
 	github.com/fanux/sealos/pkg/logger v0.0.0-20211208141141-394a895462ac
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/gocql/gocql v1.2.1
-	github.com/minio/minio-go v6.0.14+incompatible
 	github.com/minio/minio-go/v6 v6.0.57
 	github.com/nacos-group/nacos-sdk-go v1.0.5
 	golang.org/x/crypto v0.3.0
@@ -32,7 +31,6 @@ require (
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/go-errors/errors v1.0.1 // indirect
-	github.com/go-ini/ini v1.67.0 // indirect
 	github.com/go-pg/pg/extra/pgdebug v0.2.0 // indirect
 	github.com/go-pg/pg/v10 v10.10.6 // indirect
 	github.com/go-pg/zerochecker v0.2.0 // indirect
@@ -115,5 +113,5 @@ require (
 	gorm.io/driver/postgres v1.1.1 // indirect
 	gorm.io/driver/sqlserver v1.0.9 // indirect
 	gorm.io/gorm v1.21.15 // indirect
-	mellium.im/sasl v0.2.1 // indirect
+	mellium.im/sasl v0.3.1 // indirect
 )
