@@ -33,11 +33,11 @@ imagePullSecrets:
 
 # -- (string) Kubernetes config path
 # @default -- `"~/.kube/config"`
-kubeConfigPath: ""
+kubeConfigPath: "~/.kube/config"
 # -- (string) Kubernetes service host
-k8sServiceHost: ""
+k8sServiceHost: "172.16.3.28"
 # -- (string) Kubernetes service port
-k8sServicePort: ""
+k8sServicePort: "6443"
 
 cluster:
   # -- Name of the cluster. Only required for Cluster Mesh.
@@ -299,7 +299,7 @@ aksbyocni:
 
 # -- Enable installation of PodCIDR routes between worker
 # nodes if worker nodes share a common L2 network segment.
-autoDirectNodeRoutes: false
+autoDirectNodeRoutes: true
 
 # -- Annotate k8s node upon initialization with Cilium's metadata.
 annotateK8sNode: false
@@ -326,7 +326,7 @@ alibabacloud:
 # Time) through the "kubernetes.io/egress-bandwidth" Pod annotation.
 bandwidthManager:
   # -- Enable bandwidth manager infrastructure (also prerequirement for BBR)
-  enabled: false
+  enabled: true
   # -- Activate BBR TCP congestion control for Pods
   bbr: false
 
@@ -362,11 +362,11 @@ bpf:
   root: /sys/fs/bpf
 
   # -- Enable BPF clock source probing for more efficient tick retrieval.
-  clockProbe: false
+  clockProbe: true
 
   # -- Enables pre-allocation of eBPF map values. This increases
   # memory usage but can reduce latency.
-  preallocateMaps: false
+  preallocateMaps: true
 
   # -- (int) Configure the maximum number of entries in the TCP connection tracking
   # table.
@@ -427,7 +427,7 @@ bpf:
   # -- (bool) Configure the eBPF-based TPROXY to reduce reliance on iptables rules
   # for implementing Layer 7 policy.
   # @default -- `false`
-  tproxy: ~
+  tproxy: true
 
   # -- (list) Configure explicitly allowed VLAN id's for bpf logic bypass.
   # [0] will allow all VLAN id's without any filtering.
@@ -591,16 +591,16 @@ enableCnpStatusUpdates: false
 
 # -- Configures the use of the KVStore to optimize Kubernetes event handling by
 # mirroring it into the KVstore for reduced overhead in large clusters.
-enableK8sEventHandover: false
+enableK8sEventHandover: true
 
 # -- Enable setting identity mark for local traffic.
 # enableIdentityMark: true
 
 # -- Enable Kubernetes EndpointSlice feature in Cilium if the cluster supports it.
-# enableK8sEndpointSlice: true
+enableK8sEndpointSlice: true
 
 # -- Enable CiliumEndpointSlice feature.
-enableCiliumEndpointSlice: false
+enableCiliumEndpointSlice: true
 
 ingressController:
   # -- Enable cilium ingress controller
@@ -733,7 +733,7 @@ endpointStatus:
 endpointRoutes:
   # -- Enable use of per endpoint routes instead of routing via
   # the cilium_host interface.
-  enabled: false
+  enabled: true
 
 eni:
   # -- Enable Elastic Network Interface (ENI) integration.
@@ -893,7 +893,7 @@ hubble:
       # -- Metrics relabeling configs for the ServiceMonitor hubble
       metricRelabelings: ~
     dashboards:
-      enabled: false
+      enabled: true
       label: grafana_dashboard
       namespace: ~
       labelValue: "1"
@@ -989,7 +989,7 @@ hubble:
 
   relay:
     # -- Enable Hubble Relay (requires hubble.enabled=true)
-    enabled: false
+    enabled: true
 
     # -- Roll out Hubble Relay pods automatically when configmap is updated.
     rollOutPods: false
@@ -1347,7 +1347,7 @@ identityChangeGracePeriod: ""
 # traffic. This option is only effective when Cilium is running in direct
 # routing and full KPR mode. Moreover, this option cannot be enabled when Cilium
 # is running in a managed Kubernetes environment or in a chained CNI setup.
-installNoConntrackIptablesRules: false
+installNoConntrackIptablesRules: true
 
 ipam:
   # -- Configure IP Address Management mode.
@@ -1356,7 +1356,7 @@ ipam:
   operator:
     # -- Deprecated in favor of ipam.operator.clusterPoolIPv4PodCIDRList.
     # IPv4 CIDR range to delegate to individual nodes for IPAM.
-    clusterPoolIPv4PodCIDR: "10.0.0.0/8"
+    clusterPoolIPv4PodCIDR: "100.64.0.0/10"
     # -- IPv4 CIDR list range to delegate to individual nodes for IPAM.
     clusterPoolIPv4PodCIDRList: []
     # -- IPv4 CIDR mask size to delegate to individual nodes for IPAM.
@@ -1433,7 +1433,7 @@ readinessProbe:
 # -- Configure the kube-proxy replacement in Cilium BPF datapath
 # Valid options are "disabled", "partial", "strict".
 # ref: https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/
-#kubeProxyReplacement: "disabled"
+kubeProxyReplacement: "strict"
 
 # -- healthz server bind address for the kube-proxy replacement.
 # To enable set the value to '0.0.0.0:10256' for all ipv4
@@ -1451,7 +1451,7 @@ l2NeighDiscovery:
 l7Proxy: true
 
 # -- Enable Local Redirect Policy.
-localRedirectPolicy: false
+localRedirectPolicy: true
 
 # To include or exclude matched resources from cilium identity evaluation
 # labels: ""
@@ -1485,7 +1485,7 @@ enableIPv6Masquerade: true
 # -- Enables egress gateway to redirect and SNAT the traffic that leaves the
 # cluster.
 egressGateway:
-  enabled: false
+  enabled: true
   # -- Install egress gateway IP rules and routes in order to properly steer
   # egress gateway traffic to the correct ENI interface
   installRoutes: false
@@ -1514,7 +1514,7 @@ vtep:
 # direct routing and the Kubernetes CIDR is included in the native routing CIDR,
 # the user must configure the routes to reach pods, either manually or by
 # setting the auto-direct-node-routes flag.
-ipv4NativeRoutingCIDR: ""
+ipv4NativeRoutingCIDR: "100.64.0.0/10"
 
 # -- (string) Allows to explicitly specify the IPv6 CIDR for native routing.
 # When specified, Cilium assumes networking for this CIDR is preconfigured and
@@ -1541,11 +1541,11 @@ loadBalancer:
 
   # -- algorithm is the name of the load balancing algorithm for backend
   # selection e.g. random or maglev
-  # algorithm: random
+  algorithm: maglev
 
   # -- mode is the operation mode of load balancing for remote backends
   # e.g. snat, dsr, hybrid
-  # mode: snat
+  mode: dsr
 
   # -- acceleration is the option to accelerate service handling via XDP
   # e.g. native, disabled
@@ -1583,7 +1583,7 @@ loadBalancer:
 # -- Configure N-S k8s service loadbalancing
 nodePort:
   # -- Enable the Cilium NodePort service implementation.
-  enabled: false
+  enabled: true
 
   # -- Port range to use for NodePort services.
   # range: "30000,32767"
@@ -1681,7 +1681,7 @@ sleepAfterInit: false
 # -- Configure BPF socket operations configuration
 sockops:
   # enabled enables installation of socket options acceleration.
-  enabled: false
+  enabled: true
 
 # -- Enable check of service source ranges (currently, only for LoadBalancer).
 svcSourceRangeCheck: true
@@ -1731,7 +1731,7 @@ disableEndpointCRD: "false"
 
 wellKnownIdentities:
   # -- Enable the use of well-known identities.
-  enabled: false
+  enabled: true
 
 etcd:
   # -- Enable etcd mode for the agent.
